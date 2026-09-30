@@ -308,3 +308,19 @@ canvas#page-bg { opacity: .6 !important; }
   .nav-articles-link { margin-right: var(--space-4); }
   .nav-container .nav-cta { white-space: nowrap; }
 }
+
+/* ---------- Student housing calculator link ---------- */
+.nav-calc-link { margin-right: var(--space-8); text-decoration: none; }
+.nav-links .nav-calc-link { margin-right: 0; }
+.tool-card { max-width: 720px; }
+.tool-card .card-body { margin-bottom: var(--space-6); }
+a.tool-btn { text-decoration: none; display: inline-block; }
+@media (max-width: 600px) {
+  /* On phones the top bar has no room; the home page card links to it instead. */
+  .nav-calc-link { display: none; }
+}
+.nav-container > .nav-calc-link { margin-left: auto; }
+.nav-calc-link + .nav-articles-link { margin-left: 0; }
+@media (max-width: 600px) {
+  .nav-calc-link + .nav-articles-link { margin-left: auto; }
+}

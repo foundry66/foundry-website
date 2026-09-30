@@ -6,6 +6,7 @@
    one entry to articles/articles.json. Newest first. */
 (function () {
   var base = 'articles/';
+  var CALC = 'https://student-housing-apraisal.foundry.pm/';
 
   function el(tag, cls, text) {
     var e = document.createElement(tag);
@@ -35,6 +36,11 @@
     var a = el('a', 'nav-cta nav-articles-link', 'Articles');
     a.href = base;
     bar.insertBefore(a, cta);
+    var c = el('a', 'nav-cta nav-calc-link', 'Calculator');
+    c.href = CALC;
+    c.target = '_blank';
+    c.rel = 'noopener';
+    bar.insertBefore(c, a);
     return true;
   }
 
@@ -72,6 +78,28 @@
     window.dispatchEvent(new Event('resize'));
   }
 
+  function addTool() {
+    var contact = document.getElementById('contact');
+    if (!contact || document.getElementById('tools')) return;
+    var sec = el('section', 'section');
+    sec.id = 'tools';
+    var box = el('div', 'section-container content-halo');
+    var div = el('span', 'section-divider'); div.setAttribute('aria-hidden', 'true');
+    box.appendChild(div);
+    box.appendChild(el('p', 'section-label', 'TOOLS'));
+    box.appendChild(el('h2', 'section-headline', 'Student Housing Appraisal'));
+    var card = el('div', 'party-card content-halo tool-card');
+    card.appendChild(el('p', 'card-body', 'Test a purpose-built student accommodation scheme in minutes. Model land, build cost, rents and exit yield, and see whether the numbers work before any design starts.'));
+    var go = el('a', 'btn-primary tool-btn', 'Open the calculator');
+    go.href = CALC; go.target = '_blank'; go.rel = 'noopener';
+    card.appendChild(go);
+    box.appendChild(card);
+    sec.appendChild(box);
+    var ins = document.getElementById('insights');
+    contact.parentNode.insertBefore(sec, ins || contact);
+    window.dispatchEvent(new Event('resize'));
+  }
+
   function start() {
     var tries = 0;
     var timer = setInterval(function () {
@@ -85,7 +113,8 @@
         fetch(base + 'articles.json', { cache: 'no-cache' })
           .then(function (r) { return r.json(); })
           .then(addSection)
-          .catch(function () {});
+          .catch(function () {})
+          .then(addTool);
       }
     }, 50);
   }
