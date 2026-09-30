@@ -1,0 +1,41 @@
+name: Import live site files
+
+# Copies the current live foundry.pm files (as built in March 2026)
+# into this repository, exactly as they are. Run it by hand from the
+# Actions tab. It only adds or replaces index.html, favicon.svg,
+# opengraph.jpg and the files in assets/.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download the live files
+        run: |
+          set -euo pipefail
+          mkdir -p live
+          curl -fsSL https://foundry.pm/ -o live/index.html
+          mkdir -p live/assets
+          for f in $(grep -oE 'assets/[A-Za-z0-9._-]+' live/index.html | sort -u); do
+            curl -fsSL "https://foundry.pm/$f" -o "live/$f"
+          done
+          curl -fsSL https://foundry.pm/favicon.svg -o live/favicon.svg
+          curl -fsSL https://foundry.pm/opengraph.jpg -o live/opengraph.jpg
+          ls -la live live/assets
+          cp -r live/. .
+          rm -rf live
+
+      - name: Save the files to the repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Import the live foundry.pm files" || echo "Nothing changed"
+          git push
