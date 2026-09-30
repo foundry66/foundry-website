@@ -273,3 +273,38 @@ a.nav-wordmark { color: inherit; text-decoration: none; }
 /* Background mesh: a little stronger than the original 0.36 so the
    pattern reads more clearly. Applies to the home page and articles. */
 canvas#page-bg { opacity: .6 !important; }
+
+/* ---------- Foundry logo in the top bar ---------- */
+.nav-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: .7rem;
+  text-decoration: none;
+  line-height: 1;
+}
+.nav-logo-mark {
+  width: clamp(38px, 32px + 1vw, 48px);
+  height: auto;
+  flex: none;
+  transition: transform .6s ease;
+}
+.nav-logo:hover .nav-logo-mark { transform: rotate(20deg); }
+.nav-logo-text {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.2rem, 1.05rem + .7vw, 1.55rem);
+  letter-spacing: .16em;
+  color: #E8E4DC;
+}
+.nav-logo-pm { color: #C4A35A; letter-spacing: .08em; }
+/* Home page: the logo replaces the original text wordmark. */
+.has-logo > .nav-wordmark { display: none; }
+@media (max-width: 600px) {
+  .nav-logo { gap: .5rem; }
+  .nav-logo-mark { width: 30px; }
+  .nav-logo-text { font-size: 1.05rem; letter-spacing: .12em; }
+  .nav-logo-pm { display: none; }
+  .nav-links { gap: var(--space-4); }
+  .nav-articles-link { margin-right: var(--space-4); }
+  .nav-container .nav-cta { white-space: nowrap; }
+}
