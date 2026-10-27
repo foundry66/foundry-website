@@ -1,6 +1,7 @@
 /* Foundry home page add-on.
-   Adds an "Articles" link to the top bar and an "Insights" section
-   (latest articles) just above "Get In Touch". The original home page
+   Adds an "Articles" link to the top bar, an "Insights" section
+   (latest articles) just above "Get In Touch", and a one-way founder
+   note linking out to ogaya.com. The original home page
    is left exactly as it was built; this only adds to it.
    To publish a new article: add its folder under /articles/ and add
    one entry to articles/articles.json. Newest first. */
@@ -100,6 +101,23 @@
     window.dispatchEvent(new Event('resize'));
   }
 
+  function addFounder() {
+    // One-way link out to the founder's personal site (Jonathan's
+    // instruction, 27 Oct 2026): Foundry -> ogaya.com only, never a
+    // link back. Neutral label, no credentials repeated.
+    var direct = document.querySelector('#contact .contact-direct');
+    if (!direct || document.getElementById('founder-note')) return;
+    var p = el('p', 'contact-direct');
+    p.id = 'founder-note';
+    p.appendChild(document.createTextNode('Foundry is led by Jonathan Williams - background: '));
+    var a = el('a', 'contact-email', 'ogaya.com');
+    a.href = 'https://ogaya.com';
+    a.target = '_blank';
+    a.rel = 'noopener';
+    p.appendChild(a);
+    direct.parentNode.insertBefore(p, direct.nextSibling);
+  }
+
   function start() {
     var tries = 0;
     var timer = setInterval(function () {
@@ -110,6 +128,7 @@
         if (!ready) return;
         addLogo();
         addNavLink();
+        addFounder();
         fetch(base + 'articles.json', { cache: 'no-cache' })
           .then(function (r) { return r.json(); })
           .then(addSection)
